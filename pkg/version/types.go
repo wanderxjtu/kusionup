@@ -21,12 +21,12 @@ var versionInfo *Info
 // Info contains versioning information.
 // following attributes:
 //
-//    ReleaseVersion - "vX.Y.Z-00000000" used to indicate the last release version,
-// 		  containing GitVersion and GitCommitShort.
-//    GitVersion - "vX.Y.Z" used to indicate the last git tag.
-//    GitCommit - The git commit id corresponding to this source code.
-//    GitTreeState - "clean" indicates no changes since the git commit id
-//        "dirty" indicates source code changes after the git commit id
+//	   ReleaseVersion - "vX.Y.Z-00000000" used to indicate the last release version,
+//			  containing GitVersion and GitCommitShort.
+//	   GitVersion - "vX.Y.Z" used to indicate the last git tag.
+//	   GitCommit - The git commit id corresponding to this source code.
+//	   GitTreeState - "clean" indicates no changes since the git commit id
+//	       "dirty" indicates source code changes after the git commit id
 type Info struct {
 	ReleaseVersion string      `json:"releaseVersion" yaml:"releaseVersion"`                 // Such as "v1.2.3-3836f877"
 	GitVersion     string      `json:"gitVersion" yaml:"gitVersion"`                         // Such as "v1.2.3"
@@ -57,31 +57,40 @@ func NewInfo() (*Info, error) {
 		err            error
 	)
 
+	fmt.Println("err0")
 	// Get git info
 	if headHash, err = git.GetHeadHash(); err != nil {
+		fmt.Println("err1")
 		return nil, err
 	}
 
 	if headHashShort, err = git.GetHeadHashShort(); err != nil {
+		fmt.Println("err2")
 		return nil, err
 	}
 
 	if latestTag, err = git.GetLatestTag(); err != nil {
+		fmt.Println("err3")
 		return nil, err
 	}
 
 	if gitVersion, err = goversion.NewVersion(latestTag); err != nil {
+		fmt.Println("err4")
+		fmt.Println(latestTag)
 		return nil, err
 	}
 
 	if isHeadAtTag, err = git.IsHeadAtTag(latestTag); err != nil {
+		fmt.Println("err5")
 		return nil, err
 	}
 
 	if isDirty, err = git.IsDirty(); err != nil {
+		fmt.Println("err6")
 		return nil, err
 	}
 
+	fmt.Println("err7")
 	// Get git tree state
 	if isDirty {
 		gitTreeState = "dirty"
